@@ -1,0 +1,13 @@
+# Mengabaikan folder virtual environment
+.venv/
+__pycache__/
+
+# Mengabaikan folder dataset yang berat
+dataset_rsna/
+dataset_yolo/
+dataset_cnn/
+
+# Mengabaikan file zip dan file besar lainnya
+*.zip
+*.rar
+runs/

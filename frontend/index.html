@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cybernetic Medical Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="void-grid" aria-hidden="true"></div>
+  <div class="holo-field" aria-hidden="true"></div>
+  <div class="noise-layer" aria-hidden="true"></div>
+
+  <main class="terminal-shell">
+    <header class="command-ribbon">
+      <div class="brand-stack">
+        <span class="system-kicker">PulmoSight AI / Diagnostic Terminal</span>
+        <h1>Cybernetic Medical Terminal</h1>
+      </div>
+      <div class="system-readout" aria-live="polite">
+        <span class="readout-dot"></span>
+        <span id="connectionStatus">API LINK: STANDBY</span>
+      </div>
+    </header>
+
+    <section class="hud-grid" aria-label="Medical AI diagnostic interface">
+      <aside class="side-rail left-rail">
+        <section class="tech-panel upload-panel">
+          <div class="panel-heading">
+            <span>01</span>
+            <h2>Specimen Intake</h2>
+          </div>
+
+          <label class="drop-zone" id="dropZone" for="fileInput">
+            <input id="fileInput" type="file" accept="image/*,.dcm,.dicom,application/dicom">
+            <span class="drop-orbit" aria-hidden="true"></span>
+            <span class="drop-title">Insert X-Ray Image</span>
+            <span class="drop-meta" id="fileName">DICOM/JPG/PNG input ready</span>
+          </label>
+
+          <div class="control-stack">
+            <button class="cyber-button primary" id="analyzeButton" type="button" disabled>
+              <span class="button-glitch" data-text="Initiate Scan">Initiate Scan</span>
+              <span class="signal-bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i>
+              </span>
+            </button>
+            <button class="cyber-button ghost" id="resetButton" type="button">
+              <span class="button-glitch" data-text="Purge Session">Purge Session</span>
+            </button>
+          </div>
+
+          <div class="telemetry-strip" aria-label="Session telemetry">
+            <div>
+              <span>Endpoint</span>
+              <strong id="endpointReadout">/api/predict</strong>
+            </div>
+            <div>
+              <span>State</span>
+              <strong id="stateReadout">IDLE</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="tech-panel micro-panel">
+          <div class="panel-heading">
+            <span>02</span>
+            <h2>AI Confidence</h2>
+          </div>
+          <div class="ring-module">
+            <svg class="progress-ring" viewBox="0 0 120 120" role="img" aria-labelledby="confidenceTitle confidenceText">
+              <title id="confidenceTitle">Average AI confidence</title>
+              <desc id="confidenceText">Confidence score appears after analysis.</desc>
+              <circle class="ring-track" cx="60" cy="60" r="48"></circle>
+              <circle class="ring-core" id="confidenceRing" cx="60" cy="60" r="48"></circle>
+            </svg>
+            <div class="ring-data">
+              <span id="confidenceValue">--%</span>
+              <small>mean certainty</small>
+            </div>
+          </div>
+          <div class="fragment-meter" id="fragmentMeter" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </section>
+      </aside>
+
+      <section class="target-stage" aria-label="X-Ray target display">
+        <div class="target-frame" id="targetFrame">
+          <div class="reticle-layer" aria-hidden="true">
+            <span class="axis horizontal"></span>
+            <span class="axis vertical"></span>
+            <span class="reticle-ring"></span>
+            <span class="corner top-left"></span>
+            <span class="corner top-right"></span>
+            <span class="corner bottom-left"></span>
+            <span class="corner bottom-right"></span>
+          </div>
+          <div class="scan-laser" aria-hidden="true"></div>
+          <img id="xrayPreview" alt="Selected chest X-Ray preview">
+          <div class="box-overlay" id="boxOverlay" aria-hidden="true"></div>
+          <div class="empty-target" id="emptyTarget">
+            <span class="target-icon"></span>
+            <strong>Awaiting Radiographic Input</strong>
+            <small>Neural detector locked in passive observation mode</small>
+          </div>
+          <div class="target-caption">
+            <span id="targetStatus">TARGET: UNASSIGNED</span>
+            <span id="scanTimer">00.00s</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-rail right-rail">
+        <section class="tech-panel findings-panel">
+          <div class="panel-heading">
+            <span>03</span>
+            <h2>Detected Anomalies</h2>
+          </div>
+          <div class="finding-list" id="findingList">
+            <div class="empty-feed">No anomaly vectors resolved.</div>
+          </div>
+        </section>
+
+        <section class="tech-panel report-panel">
+          <div class="panel-heading">
+            <span>04</span>
+            <h2>Medical Synthesis</h2>
+          </div>
+          <p id="reportText">Upload a lung X-Ray and initiate the diagnostic scan to generate an AI-assisted observation report.</p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <template id="findingTemplate">
+    <article class="finding-node">
+      <div class="finding-header">
+        <strong data-field="temuan">Unknown</strong>
+        <span data-field="confidence">0%</span>
+      </div>
+      <div class="severity-line">
+        <span data-field="keparahan">Pending</span>
+        <small data-field="box">box: --</small>
+      </div>
+      <div class="data-bar" aria-hidden="true">
+        <span></span>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Jalankan split_yolo_dataset.py sebelum training pertama.
+path: dataset_yolo_split
+train: images/train
+val: images/val
+test: images/test
+
+# Jumlah kelas
+nc: 1
+
+# Nama kelas
+names:
+  0: Pneumonia
